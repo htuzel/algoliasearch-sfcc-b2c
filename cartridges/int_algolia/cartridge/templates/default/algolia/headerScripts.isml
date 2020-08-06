@@ -3,7 +3,11 @@
 
 <isif condition="${algoliaData.getPreference('Enable')}">
     <script>
+    var hitComponent = function(props) => {
+        return `<div>${props.name}</div>`
+    }
         var algoliaData = {
+            'hitComponent': hitComponent,
             "enable": ${algoliaData.getPreference('Enable')},
             "applicationID": "${algoliaData.getPreference('ApplicationID')}",
             "searchApiKey": "${algoliaData.getPreference('SearchApiKey')}",
@@ -41,6 +45,8 @@
                 "small": "${URLUtils.staticURL('/images/noimagesmall.png')}"
             }
         }
+
+        window.algoliaData = algoliaData
     </script>
 
     <!-- Algolia Insights (Click Analytics & Personalization) -->
@@ -54,20 +60,35 @@
     </script>
     <script src="${URLUtils.staticURL('/js/algolia/insights-config.js')}"></script>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default%2CArray.prototype.find%2CArray.prototype.includes%2CPromise%2CObject.assign%2CObject.entries"></script>
-    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@3/dist/algoliasearchLite.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hogan.js@1.0.2"></script>
+    <script>
+    window.addEventListener('DOMContentLoaded', function() {
+    var url = "${URLUtils.staticURL('/js/algolia/algolia_unified_ui/export/search.js')}"
+    var script = document.createElement('script')
+    script.setAttribute('src', url)
+    document.head.appendChild(script)
 
-    <!-- Algolia Autocomplete.js -->
-    <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
-    <script src="${URLUtils.staticURL('/js/algolia/autocomplete-config.js')}"></script>
+    })
+    </script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default%2CArray.prototype.find%2CArray.prototype.includes%2CPromise%2CObject.assign%2CObject.entries"></script>
+    // <script src="${URLUtils.staticURL('/js/algolia/algolia_unified_ui/export/search.js')}"></script>
+    <link rel="stylesheet" href="${URLUtils.staticURL('/js/algolia/algolia_unified_ui/export/search.css')}" />
+    <isif condition="${false}">    
+        <script src="https://cdn.jsdelivr.net/npm/algoliasearch@3/dist/algoliasearchLite.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/hogan.js@1.0.2"></script>
 
-    <!-- Algolia InstantSearch.js -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7/themes/reset-min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
-    <script src="${URLUtils.staticURL('/js/algolia/instantsearch-config.js')}"></script>
+        <!-- Algolia Autocomplete.js -->
+        <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+        <script src="${URLUtils.staticURL('/js/algolia/autocomplete-config.js')}"></script>
 
-    <link rel="stylesheet" href="${URLUtils.staticURL('/css/algolia/index.css')}" />
-    <script src="${URLUtils.staticURL('/js/algolia/index.js')}"></script>
+        <!-- Algolia InstantSearch.js -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7/themes/reset-min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+        <script src="${URLUtils.staticURL('/js/algolia/instantsearch-config.js')}"></script>
+
+        <link rel="stylesheet" href="${URLUtils.staticURL('/css/algolia/index.css')}" />
+        <script src="${URLUtils.staticURL('/js/algolia/index.js')}"></script>
+    </isif>
+
+
 </isif>
 <!-- End of Algolia dependencies -->

@@ -24,25 +24,25 @@ document.addEventListener('DOMContentLoaded', function () {
     enableInsights(algoliaData.applicationID, algoliaData.searchApiKey);
 
     // FIXME: enable autocomplete everywhere
-    enableAutocomplete({
-        searchClient: searchClient,
-        productsIndex: productsIndex,
-        categoriesIndex: categoriesIndex,
-        searchPageRoot: searchPageRoot
-    });
+    // enableAutocomplete({
+    //     searchClient: searchClient,
+    //     productsIndex: productsIndex,
+    //     categoriesIndex: categoriesIndex,
+    //     searchPageRoot: searchPageRoot
+    // });
 
     // FIXME: only enable on search and category page
-    enableInstantSearch({
-        searchClient: searchClient,
-        productsIndex: productsIndex,
-        productsIndexPriceAsc: productsIndexPriceAsc,
-        productsIndexPriceDesc: productsIndexPriceDesc,
+    // enableInstantSearch({
+    //     searchClient: searchClient,
+    //     productsIndex: productsIndex,
+    //     productsIndexPriceAsc: productsIndexPriceAsc,
+    //     productsIndexPriceDesc: productsIndexPriceDesc,
 
-        urlQuery: urlQuery,
-        categoryDisplayNamePath: categoryDisplayNamePath,
-        categoryDisplayNamePathSeparator: categoryDisplayNamePathSeparator,
-        userCurrency: userCurrency,
-        userCurrencySymbol: userCurrencySymbol
-    });
+    //     urlQuery: urlQuery,
+    //     categoryDisplayNamePath: categoryDisplayNamePath,
+    //     categoryDisplayNamePathSeparator: categoryDisplayNamePathSeparator,
+    //     userCurrency: userCurrency,
+    //     userCurrencySymbol: userCurrencySymbol
+    // });
 
 });
