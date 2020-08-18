@@ -62,17 +62,19 @@
 
     <script>
     window.addEventListener('DOMContentLoaded', function() {
-    var url = "${URLUtils.staticURL('/js/algolia/algolia_unified_ui/export/search.js')}"
+    var url = "${URLUtils.staticURL('/js/algolia/unified_ui/search.js')}"
     var script = document.createElement('script')
     script.setAttribute('src', url)
     document.head.appendChild(script)
 
     })
     </script>
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=default%2CArray.prototype.find%2CArray.prototype.includes%2CPromise%2CObject.assign%2CObject.entries"></script>
-    // <script src="${URLUtils.staticURL('/js/algolia/algolia_unified_ui/export/search.js')}"></script>
-    <link rel="stylesheet" href="${URLUtils.staticURL('/js/algolia/algolia_unified_ui/export/search.css')}" />
-    <isif condition="${false}">    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default%2CArray.prototype.find%2CArray.prototype.includes%2CPromise%2CObject.assign%2CObject.entries"></script>
+
+    <!-- <script src="${URLUtils.staticURL('/js/algolia/unified_ui/search.js')}"></script> -->
+    <link rel="stylesheet" href="${URLUtils.staticURL('/js/algolia/unified_ui/search.css')}" />
+
+    <isif condition="${false}">
         <script src="https://cdn.jsdelivr.net/npm/algoliasearch@3/dist/algoliasearchLite.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/hogan.js@1.0.2"></script>
 
