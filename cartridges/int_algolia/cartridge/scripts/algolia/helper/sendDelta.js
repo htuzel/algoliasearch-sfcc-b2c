@@ -56,7 +56,7 @@ function sendDelta(deltaList, logID, parameters) {
     sendLogData.sendDate = algoliaData.getLocalDateTime(new Date());
     sendLogData.sendError = true;
     sendLogData.sendErrorMessage = '';
-    sendLogData.sendedChunk = 0;
+    sendLogData.sentChunks = 0;
     sendLogData.sendedRecords = 0;
     sendLogData.failedChunk = 0;
     sendLogData.failedRecords = 0;
@@ -105,7 +105,7 @@ function sendDelta(deltaList, logID, parameters) {
                     return status;
                 }
             } else {
-                sendLogData.sendedChunk += 1;
+                sendLogData.sentChunks += 1;
                 sendLogData.sendedRecords += entries.length;
             }
             entries.length = 0; // crear the array
@@ -122,7 +122,7 @@ function sendDelta(deltaList, logID, parameters) {
         sendLogData.sendErrorMessage = status.details.errorMessage ? status.details.errorMessage : 'Error sending chunk. See the log file for details.';
     } else {
         sendLogData.sendError = false;
-        sendLogData.sendedChunk += sendLogData.failedChunk;
+        sendLogData.sentChunks += sendLogData.failedChunk;
         sendLogData.sendedRecords += sendLogData.failedRecords;
         sendLogData.failedChunk = 0;
         sendLogData.failedRecords = 0;
@@ -132,7 +132,7 @@ function sendDelta(deltaList, logID, parameters) {
     algoliaData.setLogData(logID, sendLogData);
 
     logger.info('Chunk(s) sent: {0}; Failed chunk(s): {1}\nRecord(s) sent: {2}; Failed record(s): {3}',
-        sendLogData.sendedChunk, sendLogData.failedChunk, sendLogData.sendedRecords, sendLogData.failedRecords);
+        sendLogData.sentChunks, sendLogData.failedChunk, sendLogData.sendedRecords, sendLogData.failedRecords);
 
     return status;
 }
