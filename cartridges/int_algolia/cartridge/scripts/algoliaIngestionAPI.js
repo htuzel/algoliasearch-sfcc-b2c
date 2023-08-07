@@ -213,9 +213,31 @@ function registerTask(taskInfo) {
     }
 }
 
+/**
+ * Send a batch of objects to Algolia Ingestion API
+ * @param {string} taskID - ID of the ingestion task to target
+ * @param {Array} operationsArray - array of operations to send to Algolia
+ * @returns {dw.system.Status} - successful Status to send
+ */
+function sendBatch(taskID, operationsArray) {
+    var ingestionService = algoliaIngestionService.getService();
+    var baseURL = ingestionService.getConfiguration().getCredential().getURL();
+
+    ingestionService.setRequestMethod('POST');
+    ingestionService.setURL(baseURL + '/1/webhook/batch/' + taskID);
+
+    var batchObj = Object.create(null);
+    batchObj.operations = operationsArray;
+
+    var callStatus = ingestionService.call(batchObj);
+
+    return callStatus;
+}
+
 module.exports.registerSource = registerSource;
 module.exports.registerAuthentication = registerAuthentication;
 module.exports.updateAuthentication = updateAuthentication;
 module.exports.registerDestination = registerDestination;
 module.exports.updateDestination = updateDestination;
 module.exports.registerTask = registerTask;
+module.exports.sendBatch = sendBatch;
