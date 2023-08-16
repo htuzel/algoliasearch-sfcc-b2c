@@ -65,7 +65,7 @@
     </job>
 
     <job job-id="AlgoliaProductsIngestion" priority="0">
-        <description>Export products to Algolia Ingestion service for update search index files</description>
+        <description>Export products to Algolia Ingestion service to update the search index</description>
         <parameters/>
         <flow>
             <context site-id="RefArch"/>
@@ -81,5 +81,21 @@
         <rules/>
         <triggers>
         </triggers>
+    </job>
+
+    <job job-id="AlgoliaProductsIngestionChunks" priority="0">
+        <description>Sends products to Algolia Ingestion service.</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="algoliaIngestProducts" type="custom.algoliaIngestProducts" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="locale">en_US</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
     </job>
 </jobs>

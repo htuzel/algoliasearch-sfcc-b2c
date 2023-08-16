@@ -1,0 +1,44 @@
+{
+  "step-types": {
+    "chunk-script-module-step": [
+      {
+        "@type-id": "custom.algoliaIngestProducts",
+        "@supports-parallel-execution": true,
+        "@supports-site-context": true,
+        "@supports-organization-context": false,
+        "description": "Sends products to Algolia Ingestion service.",
+        "module": "int_algolia/cartridge/scripts/algolia/job/productsIngestionChunks.js",
+        "read-function": "read",
+        "process-function": "process",
+        "write-function": "send",
+        "total-count-function": "getTotalCount",
+        "before-step-function": "beforeStep",
+        "before-chunk-function": "",
+        "after-chunk-function": "",
+        "after-step-function": "afterStep",
+        "chunk-size": 500,
+        "transactional": false,
+        "timeout-in-seconds": "600",
+        "parameters": {
+          "parameter": [
+            {
+              "@name": "locale",
+              "@type": "string",
+              "@required": true
+            }
+          ]
+        },
+        "status-codes": {
+          "status": [
+            {
+              "@code": "ERROR"
+            },
+            {
+              "@code": "OK"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
