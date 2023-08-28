@@ -186,4 +186,28 @@ Chunk-based script, supports parallel execution.</description>
         </triggers>
     </job>
 
+    <job job-id="AlgoliaProductsExport" priority="0">
+        <description>Chunk-based, parallelized product export, indexes the full catalog to Algolia.
+Can do partial and full record updates.</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="algoliaFullCatalogIndex" type="custom.algoliaSendPartialProductUpdates" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="resourceType">product</parameter>
+                    <parameter name="fieldListOverride">id, primary_category_id, in_stock, price, categories, name, short_description, long_description, image_groups, url, master, brand, color, size, online</parameter>
+                    <parameter name="fullRecordUpdate">true</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-once enabled="false">
+                <date>2023-08-28Z</date>
+                <time>14:24:00.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
+
 </jobs>
