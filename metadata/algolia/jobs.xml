@@ -83,6 +83,19 @@
         </triggers>
     </job>
 
+    <job job-id="AlgoliaProductsIndexing" priority="0">
+        <description>Sends products to Algolia Indexing API.</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="algoliaIndexProducts" type="custom.algoliaIndexProducts" enforce-restart="false">
+                <description/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+
     <job job-id="AlgoliaProductsIngestionChunks" priority="0">
         <description>Sends products to Algolia Ingestion service.</description>
         <parameters/>

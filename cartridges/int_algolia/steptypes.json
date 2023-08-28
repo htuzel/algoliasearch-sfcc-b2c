@@ -38,6 +38,35 @@
             }
           ]
         }
+      },
+      {
+        "@type-id": "custom.algoliaIndexProducts",
+        "@supports-parallel-execution": true,
+        "@supports-site-context": true,
+        "@supports-organization-context": false,
+        "description": "Sends products to Algolia Indexing API.",
+        "module": "int_algolia/cartridge/scripts/algolia/job/algoliaIndexing.js",
+        "read-function": "read",
+        "process-function": "process",
+        "write-function": "send",
+        "total-count-function": "getTotalCount",
+        "before-step-function": "beforeStep",
+        "before-chunk-function": "",
+        "after-chunk-function": "",
+        "after-step-function": "afterStep",
+        "chunk-size": 200,
+        "transactional": false,
+        "timeout-in-seconds": "600",
+        "status-codes": {
+          "status": [
+            {
+              "@code": "ERROR"
+            },
+            {
+              "@code": "OK"
+            }
+          ]
+        }
       }
     ]
   }
