@@ -5,13 +5,15 @@ var Status = require('dw/system/Status');
 var logger;
 
 // job step parameters
-var resourceType, fieldListOverride, fullRecordUpdate;
+var consumer, deltaExportJobName, fieldListOverride;
 
 // Algolia requires
 var algoliaData, AlgoliaProduct, jobHelper, algoliaExportAPI, sendHelper, productFilter;
 
-// logging-related variables
-var logData, updateLogType;
+// logging-related variables and constants
+var logData;
+const resourceType = 'productdelta';
+const updateLogType = 'LastProductDeltaSyncLog';
 
 var products = [];
 
@@ -52,23 +54,16 @@ exports.beforeStep = function(parameters, stepExecution) {
     productFilter = require('*/cartridge/scripts/algolia/filters/productFilter');
 
     // checking mandatory parameters
-    if (empty(parameters.resourceType)) {
-        let errorMessage = 'Mandatory job step parameter "resourceType" missing!';
+    if (empty(parameters.consumer) || empty(parameters.deltaExportJobName)) {
+        let errorMessage = 'Mandatory job step parameters missing!';
         jobHelper.logError(errorMessage);
         return;
     }
 
     // parameters
-    resourceType = parameters.resourceType; // resouceType ( price | inventory | product ) - pass it along to sendChunk()
+    consumer = parameters.consumer;
+    deltaExportJobName = parameters.deltaExportJobName;
     fieldListOverride = algoliaData.csvStringToArray(parameters.fieldListOverride); // fieldListOverride - pass it along to sendChunk()
-    fullRecordUpdate = !!parameters.fullRecordUpdate || false;
-
-    // configure logging
-    switch (resourceType) {
-        case 'price': updateLogType = 'LastPartialPriceSyncLog'; break;
-        case 'inventory': updateLogType = 'LastPartialInventorySyncLog'; break;
-        case 'product': updateLogType = 'LastProductSyncLog'; break;
-    }
 
     // initializing logs
     logData = algoliaData.getLogData(updateLogType) || {};
@@ -126,9 +121,6 @@ exports.process = function(product, parameters, stepExecution) {
         // enrich product
         var algoliaProduct = new AlgoliaProduct(product, fieldListOverride);
         var productUpdateObj = new jobHelper.UpdateProductModel(algoliaProduct);
-        if (!fullRecordUpdate) {
-            productUpdateObj.options.partial = true;
-        }
 
         logData.processedRecords++;
         logData.processedToUpdateRecords++;
