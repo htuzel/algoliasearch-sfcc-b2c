@@ -10,17 +10,13 @@ exports.beforeStep = function(parameters, stepExecution) {
     jobHelper = require('*/cartridge/scripts/algolia/helper/jobHelper');
 	sendHelper = require('*/cartridge/scripts/algolia/helper/sendHelper');
 
-	let productsIterator = ProductMgr.queryAllSiteProducts();
+	productsIterator = ProductMgr.queryAllSiteProducts();
 	productsIterator = productsIterator.asList(0, productsIterator.count).toArray();
 	currentIndex = 0;
 }
 
 exports.getTotalCount = function(parameters, stepExecution) {
 	return productsIterator.length;
-}
-
-exports.beforeChunk = function(parameters, stepExecution) {
-
 }
 
 exports.read = function(parameters, stepExecution) {
@@ -40,12 +36,3 @@ exports.process = function(product, parameters, stepExecution) {
 exports.send = function(algoliaProductsArray, parameters, stepExecution) {
 	sendHelper.sendChunk(algoliaProductsArray, 'product');
 }
-
-exports.afterChunk = function(parameters, stepExecution) {
-
-}
-
-exports.afterStep = function(success, parameters, stepExecution) {
-
-}
-
