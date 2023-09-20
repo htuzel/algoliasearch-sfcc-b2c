@@ -39,8 +39,87 @@
 					}
 				]
 			}
+		},
+
+
+
+
+
+
+
+
+		{
+			"@type-id": "custom.testSequential",
+			"@supports-parallel-execution": "false",
+			"@supports-site-context": "true",
+			"@supports-organization-context": "false",
+			"description": "Sequential test",
+			"module": "int_algolia/cartridge/scripts/algolia/steps/testSequential.js",
+			"function": "testSequential",
+			"transactional": "false",
+			"timeout-in-seconds": "28800",
+			"parameters": {
+				"parameter": []
+			},
+			"status-codes": {
+				"status": [{
+						"@code": "ERROR",
+						"description": "Used when the step failed with an error."
+					},
+					{
+						"@code": "FINISHED",
+						"description": "Used when the step finished successfully."
+					},
+					{
+						"@code": "FINISHED_WITH_WARNINGS",
+						"description": "Used when the step finished with warnings."
+					}
+				]
+			}
 		}],
-		"chunk-script-module-step": [{
+		"chunk-script-module-step": [
+			{
+				"@type-id": "custom.testParallel",
+				"@supports-parallel-execution": true,
+				"@supports-site-context": true,
+				"@supports-organization-context": false,
+				"description": "Parallel test",
+				"module": "int_algolia/cartridge/scripts/algolia/steps/testParallel.js",
+				"read-function": "read",
+				"process-function": "process",
+				"write-function": "send",
+				"total-count-function": "getTotalCount",
+				"before-step-function": "beforeStep",
+				"before-chunk-function": "beforeChunk",
+				"after-chunk-function": "afterChunk",
+				"after-step-function": "afterStep",
+				"chunk-size": 500,
+				"transactional": false,
+				"timeout-in-seconds": "14400",
+				"parameters": {
+					"parameter": []
+
+				},
+				"status-codes": {
+					"status": [{
+							"@code": "ERROR",
+							"description": "Used when the step failed with an error."
+						},
+						{
+							"@code": "OK",
+							"description": "Used when the step finished successfully."
+						}
+					]
+				}
+			},
+
+
+
+
+
+
+
+			{
 			"@type-id": "custom.sendChunkOrientedProductUpdates",
 			"@supports-parallel-execution": true,
 			"@supports-site-context": true,
