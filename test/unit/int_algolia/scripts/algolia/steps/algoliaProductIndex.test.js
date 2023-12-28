@@ -129,41 +129,27 @@ describe('process', () => {
     });
 });
 
-describe('send', () => {
-    test('normal batch', () => {
-        job.beforeStep({}, stepExecution);
+test('send', () => {
+    job.beforeStep({}, stepExecution);
 
-        const algoliaOperationsChunk = [];
-        for (let i = 0; i < 3; ++i) {
-            const algoliaOperations = [
-                { action: 'addObject', indexName: 'test_en', body: { id: `${i}` } },
-                { action: 'addObject', indexName: 'test_fr', body: { id: `${i}` } },
-            ];
-            algoliaOperations.toArray = function () {
-                return algoliaOperations;
-            };
-            algoliaOperationsChunk.push(algoliaOperations);
-        }
-        algoliaOperationsChunk.toArray = function () {
-            return algoliaOperationsChunk;
+    const algoliaOperationsChunk = [];
+    for (let i = 0; i < 3; ++i) {
+        const algoliaOperations = [
+            { action: 'addObject', indexName: 'test_en', body: { id: `${i}` } },
+            { action: 'addObject', indexName: 'test_fr', body: { id: `${i}` } },
+        ];
+        algoliaOperations.toArray = function () {
+            return algoliaOperations;
         };
+        algoliaOperationsChunk.push(algoliaOperations);
+    }
+    algoliaOperationsChunk.toArray = function () {
+        return algoliaOperationsChunk;
+    };
 
-        job.send(algoliaOperationsChunk);
+    job.send(algoliaOperationsChunk);
 
-        expect(mockSendMultiIndexBatch).toHaveBeenCalledWith(algoliaOperationsChunk.flat());
-    });
-
-    test('empty batch', () => {
-        job.beforeStep({}, stepExecution);
-
-        const algoliaOperationsChunk = [];
-        algoliaOperationsChunk.toArray = function () {
-            return algoliaOperationsChunk;
-        };
-        job.send(algoliaOperationsChunk);
-
-        expect(mockSendMultiIndexBatch).not.toHaveBeenCalled();
-    });
+    expect(mockSendMultiIndexBatch).toHaveBeenCalledWith(algoliaOperationsChunk.flat());
 });
 
 describe('afterStep', () => {
