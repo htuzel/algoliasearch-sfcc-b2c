@@ -3,7 +3,11 @@ name: Main Workflow
 on:
   pull_request:
     branches:
-      - main
+      - develop
+      - master
+
+  workflow_dispatch:
+    
 
 env:
   SFCC_OAUTH_CLIENT_ID: ${{ secrets.SFCC_CLIENT_ID }}
