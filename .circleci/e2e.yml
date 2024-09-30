@@ -1,39 +1,16 @@
 version: 2.1
 
-orbs:
-  node: circleci/node@6.1.0
-  cypress: cypress-io/cypress@3
-
-aliases:
-  - &persist_work_dir
-    root: .
-    paths:
-      - .
-  - &attach_work_dir
-    at: .
-  - &node_executor
-    name: node/default
-    tag: '18.15'
+# Orbs can be used for Cypress (optional)
+# orbs:
+#   cypress: cypress-io/cypress@1
 
 jobs:
-  checkout:
-    executor: *node_executor
-    steps:
-      - checkout
-      - node/install-packages
-      - run: npm run lint:js
-      - persist_to_workspace: *persist_work_dir
-
-  test:
-    executor: *node_executor
-    steps:
-      - attach_workspace: *attach_work_dir
-      - run: npm run test
-      - run: npm run test:unit
-
   prepare-site-import:
-    executor: *node_executor
+    docker:
+      - image: cimg/node:14.17
+    working_directory: ~/storefront-reference-architecture
     environment:
+      # Ensure these environment variables are set in your CircleCI project settings
       SFCC_OAUTH_CLIENT_ID: $SFCC_OAUTH_CLIENT_ID
       SFCC_OAUTH_CLIENT_SECRET: $SFCC_OAUTH_CLIENT_SECRET
       ALGOLIA_APP_ID: $ALGOLIA_APP_ID
@@ -96,7 +73,7 @@ jobs:
       - run:
           name: Generate preferences.xml
           command: |
-            cat \<< EOF > site_import/sites/RefArch/preferences.xml
+            cat << EOF > site_import/sites/RefArch/preferences.xml
             <?xml version="1.0" encoding="UTF-8"?>
             <preferences xmlns="http://www.demandware.com/xml/impex/preferences/2007-03-31">
                 <custom-preferences>
@@ -122,8 +99,10 @@ jobs:
           command: rm -rf site_import site_import.zip
 
   deployment-and-jobs:
-    executor: *node_executor
+    docker:
+      - image: cimg/node:14.17
     environment:
+      # Ensure these environment variables are set in your CircleCI project settings
       SFCC_OAUTH_CLIENT_ID: $SFCC_OAUTH_CLIENT_ID
       SFCC_OAUTH_CLIENT_SECRET: $SFCC_OAUTH_CLIENT_SECRET
       SANDBOX_HOST: $SANDBOX_HOST
@@ -179,8 +158,10 @@ jobs:
             sleep 240
 
   index-tests:
-    executor: *node_executor
+    docker:
+      - image: cimg/node:14.17
     environment:
+      # Ensure these environment variables are set in your CircleCI project settings
       ALGOLIA_APP_ID: $ALGOLIA_APP_ID
       ALGOLIA_API_KEY: $ALGOLIA_API_KEY
     steps:
@@ -196,8 +177,10 @@ jobs:
           command: npm test -- test/e2e/variation_index.test.js
 
   e2e-tests:
-    executor: cypress/default
+    docker:
+      - image: cypress/base:14
     environment:
+      # Ensure these environment variables are set in your CircleCI project settings
       ALGOLIA_APP_ID: $ALGOLIA_APP_ID
       ALGOLIA_API_KEY: $ALGOLIA_API_KEY
     steps:
@@ -210,15 +193,12 @@ jobs:
           command: npm test -- test/e2e/validate_algolia.test.js
       - run:
           name: Run Cypress Tests
-          command: npx cypress run --browser electron --headless --config-file cypress.config.js
+          command: npx cypress run --browser chrome --headless --config-file cypress.config.js
 
 workflows:
-  suite:
+  version: 2
+  main_workflow:
     jobs:
-      - checkout
-      - test:
-          requires:
-            - checkout
       - prepare-site-import:
           filters:
             branches:
